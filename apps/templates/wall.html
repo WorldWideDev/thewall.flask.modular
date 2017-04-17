@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" media="screen" title="no title">
+    </head>
+    <body>
+        <div class="container">
+            <a href="/logout">Logout</a>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="error">{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h1>The Wall</h1>
+            <div class="header">
+                <h2>Post a message</h2>
+                <form class="" action="wall/post" method="post">
+                    <textarea name="content" rows="8" cols="40"></textarea>
+                    <input type="submit" value="Post a Message">
+                </form>
+            </div>
+            {% if posts %}
+                {% for post in posts %}
+                <div class="post-block">
+                    <hr>
+                    <h1>{{ post.post_id }}</h1>
+                    <h4>{{ post.first_name }} {{ post.last_name}} @ {{ post.created_at }}</h4>
+                    <p>{{ post.post_text }}</p>
+                    {% if post['comments']%}
+                        {% for comment in post['comments'] %}
+                            <div class="comment-block">
+                                {% if post['post_id'] == comment['post_id']%}
+                                    <h5>{{ comment['comment_text'] }}</h5>
+                                    <h6>Posted by {{ comment['first_name'] }} {{ comment['last_name'] }} at {{comment['created_at']}}</h6>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <h3>Post a Comment</h3>
+                    <form class="comment-form" action='wall/comment' method='post'>
+                        <textarea name="content" rows="4" cols="30"></textarea>
+                        <input type="hidden" name="post_id" value="{{ post.post_id }}">
+                        <input type="submit" value="Post a Comment">
+                    </form>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+    </body>
+</html>

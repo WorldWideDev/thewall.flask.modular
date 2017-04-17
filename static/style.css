@@ -1,0 +1,11 @@
+*{
+    font-family: sans-serif;
+}
+.error{
+    color: rgb(215, 89, 34);
+    font-weight: bold;
+}
+.comment-form{
+    padding-left: 30px;
+    display: inline-block;
+}
